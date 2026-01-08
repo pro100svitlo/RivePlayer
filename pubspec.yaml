@@ -20,4 +20,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/rive/
+    - assets/rive/client_name_0/
+    - assets/rive/client_name_1/

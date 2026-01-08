@@ -1,10 +1,12 @@
 import 'dart:io';
 
 /// Script to update the clientFiles map in rive_assets.dart
-/// based on actual .riv files organized by client folders in assets/rive
+/// and assets section in pubspec.yaml based on actual .riv files
+/// organized by client folders in assets/rive
 void main() async {
   const assetsDir = 'assets/rive';
   const assetsFile = 'lib/utils/rive_assets.dart';
+  const pubspecFile = 'pubspec.yaml';
 
   // Check if assets directory exists
   final assetsDirEntity = Directory(assetsDir);
@@ -17,6 +19,13 @@ void main() async {
   final assetsFileEntity = File(assetsFile);
   if (!await assetsFileEntity.exists()) {
     print('Error: File $assetsFile does not exist');
+    exit(1);
+  }
+
+  // Check if pubspec file exists
+  final pubspecFileEntity = File(pubspecFile);
+  if (!await pubspecFileEntity.exists()) {
+    print('Error: File $pubspecFile does not exist');
     exit(1);
   }
 
@@ -87,6 +96,37 @@ void main() async {
   await assetsFileEntity.writeAsString(newContent);
 
   print('✅ Successfully updated $assetsFile');
+
+  // Update pubspec.yaml assets section
+  final pubspecContent = await pubspecFileEntity.readAsString();
+
+  // Build the new assets declaration
+  final assetsBuffer = StringBuffer();
+  assetsBuffer.writeln('  assets:');
+
+  if (sortedClients.isEmpty) {
+    assetsBuffer.writeln('    # No client folders found in assets/rive');
+  } else {
+    for (final client in sortedClients) {
+      assetsBuffer.writeln('    - assets/rive/$client/');
+    }
+  }
+
+  // Replace the assets declaration using RegExp
+  final assetsPattern = RegExp(
+    r'  assets:\s*\n(?:    - .*\n)*',
+    multiLine: true,
+  );
+
+  final newPubspecContent = pubspecContent.replaceFirst(
+    assetsPattern,
+    assetsBuffer.toString(),
+  );
+
+  // Write the updated content back to pubspec.yaml
+  await pubspecFileEntity.writeAsString(newPubspecContent);
+
+  print('✅ Successfully updated $pubspecFile');
   print('Found ${sortedClients.length} client(s):');
   for (final client in sortedClients) {
     final files = clientFiles[client]!;
