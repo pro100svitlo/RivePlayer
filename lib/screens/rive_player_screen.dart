@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rive/rive.dart';
+import 'package:riveplayer/utils/rive_assets.dart';
 
 class RivePlayerScreen extends StatefulWidget {
   final String fileName;
@@ -13,7 +14,7 @@ class RivePlayerScreen extends StatefulWidget {
 
 class _RivePlayerScreenState extends State<RivePlayerScreen> {
   late final fileLoader = FileLoader.fromAsset(
-    "assets/rive/${widget.fileName}",
+    RiveAssets.getAssetPath(widget.fileName),
     riveFactory: Factory.rive,
   );
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riveplayer/utils/rive_assets.dart';
 
 class RiveListScreen extends StatelessWidget {
   const RiveListScreen({super.key});
@@ -18,9 +19,9 @@ class RiveListScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: ListView.builder(
-        itemCount: riveFiles.length,
+        itemCount: RiveAssets.availableFiles.length,
         itemBuilder: (context, index) {
-          final fileName = riveFiles[index];
+          final fileName = RiveAssets.availableFiles[index];
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListTile(

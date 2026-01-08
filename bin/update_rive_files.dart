@@ -1,10 +1,10 @@
 import 'dart:io';
 
-/// Script to update the riveFiles list in rive_list_screen.dart
+/// Script to update the availableFiles list in rive_assets.dart
 /// based on actual .riv files in assets/rive folder
 void main() async {
   const assetsDir = 'assets/rive';
-  const screenFile = 'lib/screens/rive_list_screen.dart';
+  const assetsFile = 'lib/utils/rive_assets.dart';
 
   // Check if assets directory exists
   final assetsDirEntity = Directory(assetsDir);
@@ -13,17 +13,17 @@ void main() async {
     exit(1);
   }
 
-  // Check if screen file exists
-  final screenFileEntity = File(screenFile);
-  if (!await screenFileEntity.exists()) {
-    print('Error: File $screenFile does not exist');
+  // Check if assets file exists
+  final assetsFileEntity = File(assetsFile);
+  if (!await assetsFileEntity.exists()) {
+    print('Error: File $assetsFile does not exist');
     exit(1);
   }
 
   // Find all .riv files
   print('Scanning for .riv files in $assetsDir...');
   final rivFiles = <String>[];
-  
+
   await for (final entity in assetsDirEntity.list()) {
     if (entity is File && entity.path.endsWith('.riv')) {
       final fileName = entity.path.split('/').last;
@@ -34,10 +34,10 @@ void main() async {
   // Sort the files alphabetically
   rivFiles.sort();
 
-  // Build the new riveFiles declaration
+  // Build the new availableFiles declaration
   final buffer = StringBuffer();
-  buffer.writeln('  static const List<String> riveFiles = [');
-  
+  buffer.writeln('  static const List<String> availableFiles = [');
+
   if (rivFiles.isEmpty) {
     buffer.writeln('    // No .riv files found in assets/rive');
   } else {
@@ -45,24 +45,24 @@ void main() async {
       buffer.writeln("    '$file',");
     }
   }
-  
+
   buffer.write('  ];');
 
   // Read the current file content
-  final content = await screenFileEntity.readAsString();
+  final content = await assetsFileEntity.readAsString();
 
-  // Replace the riveFiles declaration using RegExp
+  // Replace the availableFiles declaration using RegExp
   final pattern = RegExp(
-    r'  static const List<String> riveFiles = \[[\s\S]*?\];',
+    r'  static const List<String> availableFiles = \[[\s\S]*?\];',
     multiLine: true,
   );
 
   final newContent = content.replaceFirst(pattern, buffer.toString());
 
   // Write the updated content back to the file
-  await screenFileEntity.writeAsString(newContent);
+  await assetsFileEntity.writeAsString(newContent);
 
-  print('✅ Successfully updated $screenFile');
+  print('✅ Successfully updated $assetsFile');
   print('Found ${rivFiles.length} file(s):');
   for (final file in rivFiles) {
     print('  - $file');
