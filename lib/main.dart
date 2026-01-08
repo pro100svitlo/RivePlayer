@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rive/rive.dart';
 import 'package:riveplayer/screens/rive_list_screen.dart';
 import 'package:riveplayer/screens/rive_player_screen.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async{
   await RiveNative.init();
@@ -40,4 +41,5 @@ final GoRouter _router = GoRouter(
       },
     ),
   ],
+  routerNeglect: kIsWeb,
 );
