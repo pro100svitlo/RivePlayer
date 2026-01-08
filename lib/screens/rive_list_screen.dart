@@ -7,6 +7,7 @@ class RiveListScreen extends StatelessWidget {
   // List of Rive files available in assets
   static const List<String> riveFiles = [
     'test.riv',
+    'test_another.riv',
   ];
 
   @override
