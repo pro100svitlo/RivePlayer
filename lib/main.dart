@@ -5,7 +5,8 @@ import 'package:riveplayer/screens/rive_list_screen.dart';
 import 'package:riveplayer/screens/rive_player_screen.dart';
 import 'package:flutter/foundation.dart';
 
-void main() async{
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await RiveNative.init();
   runApp(const MyApp());
 }
@@ -29,10 +30,7 @@ class MyApp extends StatelessWidget {
 final GoRouter _router = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const RiveListScreen(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => const RiveListScreen()),
     GoRoute(
       path: '/player/:fileName',
       builder: (context, state) {
