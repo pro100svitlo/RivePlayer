@@ -23,6 +23,17 @@ class _PasswordScreenState extends State<PasswordScreen> {
   bool _isObscured = true;
 
   @override
+  void initState() {
+    super.initState();
+    // Check if already authenticated and redirect
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (SessionManager.instance.isAuthenticated(widget.clientName)) {
+        context.go(widget.redirectPath);
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _passwordController.dispose();
     super.dispose();
@@ -41,7 +52,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     if (RiveAssets.checkClientPassword(widget.clientName, password)) {
       // Authenticate the client
       SessionManager.instance.authenticate(widget.clientName);
-      // Redirect to the intended page
+      // Replace current route in history with the redirect path
       context.go(widget.redirectPath);
     } else {
       setState(() {
