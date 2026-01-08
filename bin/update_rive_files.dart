@@ -177,7 +177,7 @@ void main() async {
 /// Generate a random password with 16-30 characters
 String _generatePassword(Random random) {
   const chars =
-      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*()-_=+[]{}|;:,.<>?';
   final length = 16 + random.nextInt(15); // Random length between 16-30
   return List.generate(
     length,
