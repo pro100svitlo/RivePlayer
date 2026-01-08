@@ -92,7 +92,7 @@ void main() async {
   // Build the clientPasswords map declaration
   final passwordsBuffer = StringBuffer();
   passwordsBuffer.writeln(
-    '  static const Map<String, String> clientPasswords = {',
+    '  static const Map<String, String> _clientPasswords = {',
   );
 
   if (sortedClients.isEmpty) {
